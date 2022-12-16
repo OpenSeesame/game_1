@@ -1,10 +1,11 @@
 class Character:
+    Name = ''
     Hp = 500
     Mp = 50
     Atk = 50
     Ar = 0
     Mr = 0
-    def __init__(self, name="", hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr):
+    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr):
         self.__name = name
         self.__max_hp = hp
         self.__hp = hp

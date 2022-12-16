@@ -1,11 +1,11 @@
-from scripts.constants.constants import Constants
+from constants.constants import Constants
 from scripts.system.start import Start
 from scripts.character.enemy import Enemy
 import scripts.character.enemies as enemies
+import scripts.item.equipment.weapons as weapons
+import scripts.item.equipment.shields as shields
+import scripts.item.equipment.armors as armors
 from scripts.character.player import Player
-from scripts.equipment.weapon import Weapon
-from scripts.equipment.armor import Armor
-from scripts.equipment.shield import Shield
 from scripts.dialog.battle_dialog import BattleDialog
 
 
@@ -17,18 +17,21 @@ class Main:
         player = Player('Taro')
         Start(player)
 
-        katana = Weapon('Katana', 10)
-        bronze_armor = Armor('Bronze Armor', 100)
-        wood_shield = Shield('Wood Shield', 5)
+        player.equip(weapons.Katana(), Constants.WITH_DIALOG)
+        player.equip(shields.WoodShield(), Constants.WITH_DIALOG)
+        player.equip(armors.BronzeArmor(), Constants.WITH_DIALOG)
 
-        player.equip(katana)
-        player.equip(bronze_armor)
-        player.equip(wood_shield)
+        print(BattleDialog.status(player))
+
+        player.unequip(Constants.WEAPON, Constants.WITH_DIALOG)
+
+        print(BattleDialog.status(player))
+        print(BattleDialog.equipment(player))
 
         slime = enemies.Slime()
 
-        player.attack(slime)
-        slime.attack(player)
+        player.attack_with_dialog(slime)
+        slime.attack_with_dialog(player)
 
 
 Main()

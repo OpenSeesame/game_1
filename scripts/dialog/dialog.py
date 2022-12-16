@@ -1,8 +1,10 @@
 import time
-from scripts.constants.constants import Constants
-from scripts.equipment.weapon import Weapon
-from scripts.equipment.armor import Armor
-from scripts.equipment.shield import Shield
+from constants.constants import Constants
+from scripts.item.equipment.weapon import Weapon
+from scripts.item.equipment.armor import Armor
+from scripts.item.equipment.shield import Shield
+from scripts.dialog.en.dialog_en import Dialog as DialogEn
+from scripts.dialog.ja.dialog_ja import Dialog as DialogJa
 
 class Dialog():
     ASTERISK_LINE = Constants.ASTERISK * Constants.ASTERISK_COUNT + Constants.BR
@@ -42,95 +44,94 @@ class Dialog():
 
         return s
 
-    
+    ### start menu (s) ###
     # display title
     def title():
-        s = Dialog.ASTERISK_LINE
-        s += Dialog.ASTERISK_LINE
-        s += Constants.TITLE + Constants.BR
-        s += Dialog.ASTERISK_LINE
-
-        s = Dialog.word_in_asterisk(s, Constants.ALIGN_C)
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.title()
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.title()
         return s
 
     def new_load():
-        s = 'NEW GAME(1)' + Constants.BR
-        s += 'LOAD GAME(2)'
-
-        s = Dialog.word_in_asterisk(s, Constants.ALIGN_C)
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.new_load()
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.new_load()
         return s
 
     def select_mode():
-        s = '(1:NEW/2:LOAD): '
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.select_mode()
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.select_mode()
         return s
 
     def whats_your_name():
-        s = "What's your name?: "
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.whats_your_name()
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.whats_your_name()
         return s
 
     def your_name_is(name):
-        s = 'Your name is '
-        s += '"' + name + '"?(y/n): '
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.your_name_is(name)
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.your_name_is(name)
         return s
     
     def listup_save_data():
-        s = ""
-        for num in range(1, Constants.MAX_SAVE_DATA + 1):
-            s += str(num) + ': Player' + str(num) + Constants.BR
-        
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.listup_save_data()
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.listup_save_data()
         return s
 
     def choose_data():
-        s = 'Choose the data(1/2/3): '
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.choose_data()
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.choose_data()
         return s
 
     def print_loading():
-        s = 'LOADING...'
-        s = Dialog.word_in_asterisk(s, Constants.ALIGN_R)
-        print(s)
-        for i in range(Constants.ASTERISK_COUNT):
-            print(Constants.ASTERISK, end=Constants.BLANK)
-            time.sleep(0.03)
-        print()
-
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.print_loading()
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.print_loading()
         return s
-
-    def type_y_or_n():
-        s = 'Please Type "y" or "n"'
-        return s
+    ### start menu (e) ###
 
     # display status
     def status(character):
-        s = Dialog.word_in_asterisk('STATUS', Constants.ALIGN_C)
-        s += character.get_name() + Constants.BR
-        s += Dialog.ASTERISK_LINE
-        s += str('HP :' + str(character.get_hp()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
-        s += str('MP :' + str(character.get_mp()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
-        s += str('ATK:' + str(character.get_atk()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
-        s += str('AR :' + str(character.get_ar()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
-        s += str('MR :' + str(character.get_mr()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
-        s = Dialog.word_in_asterisk(s)
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.status(character)
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.status(character)
         return s
     
     # display equipment
     def equipment(player):
-        s = Dialog.word_in_asterisk('EQUIPMENT', Constants.ALIGN_C)
-        s += player.get_name() + Constants.BR
-        s += Dialog.ASTERISK_LINE
-        s += str('BUKI  : ' + player.get_weapon().get_name() + '(' + str(player.get_weapon().get_atk()) + ')') + Constants.BR
-        s += str('TATE  : ' + player.get_shield().get_name() + '(' + str(player.get_shield().get_ar()) + ')') + Constants.BR
-        s += str('YOROI : ' + player.get_armor().get_name() + '(' + str(player.get_armor().get_hp()) + ')') + Constants.BR
-        s = Dialog.word_in_asterisk(s)
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.equipment(player)
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.equipment(player)
         return s
 
-    def equiqqed(player, equipment):
-        s = Constants.BLANK
-        if isinstance(equipment, Weapon):
-            s = str(player.get_name()) + ' equipped ' + str(equipment.get_name()) + '(' + str(equipment.get_atk()) + ')!!'
-        if isinstance(equipment, Armor):
-            s = str(player.get_name()) + ' equipped ' + str(equipment.get_name()) + '(' + str(equipment.get_hp()) + ')!!'
-        if isinstance(equipment, Shield):
-            s = str(player.get_name()) + ' equipped ' + str(equipment.get_name()) + '(' + str(equipment.get_ar()) + ')!!'
-        
-        s = Dialog.word_in_asterisk(s)
+    # equipped
+    def equipped(player, equipment):
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.equipped(player, equipment)
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.equipped(player, equipment)
+        return s
+        return s
+
+    # unequipped
+    def unequipped(player, equipment):
+        if Constants.LANG == Constants.LANG_EN:
+            s = DialogEn.unequipped(player, equipment)
+        elif Constants.LANG == Constants.LANG_JA:
+            s = DialogJa.unequipped(player, equipment)
         return s

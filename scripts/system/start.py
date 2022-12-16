@@ -1,4 +1,4 @@
-from scripts.constants.constants import Constants
+from constants.constants import Constants
 from scripts.dialog.dialog import Dialog
 from scripts.character.player import Player
 

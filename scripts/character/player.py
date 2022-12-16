@@ -1,44 +1,69 @@
-from scripts.constants.constants import Constants
+from constants.constants import Constants
 from scripts.dialog.dialog import Dialog
 from scripts.dialog.battle_dialog import BattleDialog
 from scripts.system.calculate import Calculate
 
 from scripts.character.character import Character
-from scripts.equipment.weapon import Weapon
-from scripts.equipment.armor import Armor
-from scripts.equipment.shield import Shield
+from scripts.item.equipment.weapons.sude import Sude as SudeW
+from scripts.item.equipment.shields.sude import Sude as SudeS
+from scripts.item.equipment.armors.hadaka import Hadaka
+from scripts.item.equipment.weapon import Weapon
+from scripts.item.equipment.armor import Armor
+from scripts.item.equipment.shield import Shield
 
 class Player(Character):
+    Name = ''
     Hp = 500
     Mp = 50
     Atk = 50
     Ar = 0
     Mr = 0
-    def __init__(self, name="", hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr, weapon=Weapon(), shield=Shield(), armor=Armor()):
+    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr, weapon=SudeW(), shield=SudeS(), armor=Hadaka()):
         super().__init__(name, hp, mp, atk, ar, mr)
-        self.__weapon = weapon
-        self.__armor = armor
-        self.__shield = shield
-        self.set_atk(self.get_atk() + weapon.get_atk())
-        self.set_max_hp(self.get_max_hp() + armor.get_hp())
-        self.set_hp(self.get_hp() + armor.get_hp())
-        self.set_ar(self.get_ar() + shield.get_ar())
+        self.__equip_weapon(weapon)
+        self.__equip_shield(shield)
+        self.__equip_armor(armor)
 
-    def equip(self, equipment):
+    def equip(self, equipment, with_dialog=Constants.WITHOUT_DIALOG):
+        if with_dialog == Constants.WITH_DIALOG:
+            print(Dialog.equipped(self, equipment))
+
         if isinstance(equipment, Weapon):
-            self.set_atk(self.get_atk() + equipment.get_atk())
-            self.set_weapon(equipment)
-        if isinstance(equipment, Armor):
-            self.set_max_hp(self.get_max_hp() + equipment.get_hp())
-            self.set_hp(self.get_hp() + equipment.get_hp())
-            self.set_armor(equipment)
+            self.__unequip_weapon()
+            self.__equip_weapon(equipment)
         if isinstance(equipment, Shield):
-            self.set_ar(self.get_ar() + equipment.get_ar())
-            self.set_shield(equipment)
+            self.__unequip_shield()
+            self.__equip_shield(equipment)
+        if isinstance(equipment, Armor):
+            self.__unequip_armor()
+            self.__equip_armor(equipment)
 
-        print(Dialog.equiqqed(self, equipment))
-    
-    def attack(self, enemy):
+    def unequip(self, parts=Constants.ALL, with_dialog=Constants.WITHOUT_DIALOG):
+        if parts == Constants.ALL:
+            if with_dialog == Constants.WITH_DIALOG:
+                print(Dialog.unequipped(self, self.get_weapon()))
+                print(Dialog.unequipped(self, self.get_shield()))
+                print(Dialog.unequipped(self, self.get_armor()))
+            self.__unequip_weapon()
+            self.__unequip_shield()
+            self.__unequip_armor()
+
+        elif parts == Constants.WEAPON:
+            if with_dialog == Constants.WITH_DIALOG:
+                print(Dialog.unequipped(self, self.get_weapon()))
+            self.__unequip_weapon()
+
+        elif parts == Constants.SHIELD:
+            if with_dialog == Constants.WITH_DIALOG:
+                print(Dialog.unequipped(self, self.get_shield()))
+            self.__unequip_shield()
+
+        elif parts == Constants.ARMOR:
+            if with_dialog == Constants.WITH_DIALOG:
+                print(Dialog.unequipped(self, self.get_armor()))
+            self.__unequip_armor()
+
+    def attack(self, enemy, with_dialog=Constants.WITHOUT_DIALOG):
         # calculate damage
         damage = Calculate.calc_damage(self.get_atk(), enemy.get_ar())
 
@@ -47,9 +72,20 @@ class Player(Character):
         else:
             enemy.set_hp(enemy.get_hp() - damage)
 
-        print(BattleDialog.attacked(self, enemy, damage))
+        if with_dialog == Constants.WITH_DIALOG:
+            print(BattleDialog.attacked(self, enemy, damage))
+    
+    # with dialog
+    def equip_with_dialog(self, equipment):
+        self.equip(equipment, Constants.WITH_DIALOG)
 
+    def unequip_with_dialog(self, parts):
+        self.unequip(parts, Constants.WITH_DIALOG)
+   
+    def attack_with_dialog(self, enemy):
+        self.attack(enemy, Constants.WITH_DIALOG)
 
+    # getter, setter
     def get_weapon(self):
         return self.__weapon
     def set_weapon(self, weapon):
@@ -62,3 +98,26 @@ class Player(Character):
         return self.__shield
     def set_shield(self, shield):
         self.__shield = shield
+
+    # private method
+    def __equip_weapon(self, weapon):
+            self.set_atk(self.get_atk() + weapon.get_atk())
+            self.set_weapon(weapon)
+    def __equip_shield(self, shield):
+            self.set_ar(self.get_ar() + shield.get_ar())
+            self.set_shield(shield)
+    def __equip_armor(self, armor):
+            self.set_max_hp(self.get_max_hp() + armor.get_hp())
+            self.set_armor(armor)
+
+    def __unequip_weapon(self):
+            self.set_atk(self.get_atk() - self.get_weapon().get_atk())
+            self.__equip_weapon(SudeW())
+    def __unequip_shield(self):
+            self.set_ar(self.get_ar() - self.get_shield().get_ar())
+            self.__equip_shield(SudeS())
+    def __unequip_armor(self):
+            self.set_max_hp(self.get_max_hp() - self.get_armor().get_hp())
+            if (self.get_hp() > self.get_max_hp()):
+                self.set_hp(self.get_max_hp())
+            self.__equip_armor(Hadaka())

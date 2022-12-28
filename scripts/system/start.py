@@ -25,7 +25,7 @@ class Start:
         # select NEW or LOAD
         while True:
             new_load = input(Dialog.select_mode())
-            if new_load == Constants.NEW or new_load == Constants.LOAD:
+            if new_load in (Constants.NEW, Constants.LOAD):
                 break
         return new_load
 
@@ -37,7 +37,7 @@ class Start:
             while True:
                 # your name is "xxx"?(y/n)
                 yes_no = input(Dialog.your_name_is(name))
-                if yes_no == Constants.YES or yes_no == Constants.NO:
+                if yes_no in (Constants.YES, Constants.NO):
                     break
             
             # if yes

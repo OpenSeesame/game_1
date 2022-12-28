@@ -1,3 +1,6 @@
+from constants.constants import Constants
+from scripts.dialog.battle_dialog import BattleDialog
+
 class Character:
     Name = ''
     Hp = 500

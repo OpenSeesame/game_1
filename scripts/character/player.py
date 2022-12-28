@@ -18,11 +18,19 @@ class Player(Character):
     Atk = 50
     Ar = 0
     Mr = 0
-    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr, weapon=SudeW(), shield=SudeS(), armor=Hadaka()):
+    Weapon = SudeW()
+    Shield = SudeS()
+    Armor = Hadaka()
+    Guarding = False
+
+    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr, weapon=Weapon, shield=Shield, armor=Armor, guarding=Guarding):
         super().__init__(name, hp, mp, atk, ar, mr)
         self.__equip_weapon(weapon)
         self.__equip_shield(shield)
         self.__equip_armor(armor)
+        self.__guarding = guarding
+
+    ### action (s) ###
 
     def equip(self, equipment, with_dialog=Constants.WITHOUT_DIALOG):
         if with_dialog == Constants.WITH_DIALOG:
@@ -65,7 +73,7 @@ class Player(Character):
 
     def attack(self, enemy, with_dialog=Constants.WITHOUT_DIALOG):
         # calculate damage
-        damage = Calculate.calc_damage(self.get_atk(), enemy.get_ar())
+        damage = Calculate.calc_damage_ar(self, enemy)
 
         if damage > enemy.get_hp():
             enemy.set_hp(Constants.INT_ZERO)
@@ -74,7 +82,19 @@ class Player(Character):
 
         if with_dialog == Constants.WITH_DIALOG:
             print(BattleDialog.attacked(self, enemy, damage))
+ 
+    def guard(self, with_dialog=Constants.WITHOUT_DIALOG):
+        self.set_guarding(True)
+
+        if with_dialog == Constants.WITH_DIALOG:
+            print(BattleDialog.guarding(self))
     
+    def unguard(self, with_dialog=Constants.WITHOUT_DIALOG):
+        self.set_guarding(False)
+
+        if with_dialog == Constants.WITH_DIALOG:
+            self
+   
     # with dialog
     def equip_with_dialog(self, equipment):
         self.equip(equipment, Constants.WITH_DIALOG)
@@ -84,6 +104,14 @@ class Player(Character):
    
     def attack_with_dialog(self, enemy):
         self.attack(enemy, Constants.WITH_DIALOG)
+    
+    def guard_with_dialog(self):
+        self.guard(Constants.WITH_DIALOG)
+
+    def unguard_with_dialog(self):
+        self.unguard(Constants.WITH_DIALOG)
+
+    ### action (e) ###
 
     # getter, setter
     def get_weapon(self):
@@ -98,6 +126,11 @@ class Player(Character):
         return self.__shield
     def set_shield(self, shield):
         self.__shield = shield
+
+    def is_guarding(self):
+        return self.__guarding
+    def set_guarding(self, guarding):
+        self.__guarding = guarding
 
     # private method
     def __equip_weapon(self, weapon):

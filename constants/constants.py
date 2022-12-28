@@ -1,8 +1,18 @@
 class Constants:
     # language
-    LANG = 'ja'
     LANG_EN = 'en'
     LANG_JA = 'ja'
+    LANG = LANG_JA
+
+    # battle speed
+    BATTLE_SLOW = 2.0
+    BATTLE_NORMAL = 1.5
+    BATTLE_FAST = 1.2
+    BATTLE_SPEED = BATTLE_NORMAL
+
+    # guard
+    GUARD_AR = 100
+    GUARD_MR = 50
 
     # zero
     INT_ZERO = 0
@@ -39,6 +49,16 @@ class Constants:
     # with dialog
     WITH_DIALOG = 'with_dialog'
     WITHOUT_DIALOG = 'without_dialog'
+
+    # command
+    ATTACK = '1'
+    MAGIC = '2'
+    GUARD = '3'
+    RUN = '4'
+
+    # run
+    RUN_E = 'escaped'
+    RUN_F = 'failed'
 
     # char
     ASTERISK = '*'

@@ -49,7 +49,7 @@ class Dialog():
     def title():
         s = Dialog.ASTERISK_LINE
         s += Dialog.ASTERISK_LINE
-        s += Names.TITLE_EN + Constants.BR
+        s += Names.TITLE + Constants.BR
         s += Dialog.ASTERISK_LINE
 
         s = Dialog.word_in_asterisk(s, Constants.ALIGN_C)
@@ -100,25 +100,21 @@ class Dialog():
 
     # display status
     def status(character):
-        s = Dialog.word_in_asterisk('STATUS', Constants.ALIGN_C)
-        s += character.get_name() + Constants.BR
-        s += Dialog.ASTERISK_LINE
+        s = character.get_name() + Constants.BR
         s += str('HP :' + str(character.get_hp()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
         s += str('MP :' + str(character.get_mp()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
         s += str('ATK:' + str(character.get_atk()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
         s += str('AR :' + str(character.get_ar()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
-        s += str('MR :' + str(character.get_mr()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
+        s += str('MR :' + str(character.get_mr()).rjust(Constants.MAX_STATUS_LENGTH))
         s = Dialog.word_in_asterisk(s)
         return s
     
     # display equipment
     def equipment(player):
-        s = Dialog.word_in_asterisk('EQUIPMENT', Constants.ALIGN_C)
-        s += player.get_name() + Constants.BR
-        s += Dialog.ASTERISK_LINE
+        s = player.get_name() + Constants.BR
         s += str('BUKI  : ' + player.get_weapon().get_name() + '(' + str(player.get_weapon().get_atk()) + ')') + Constants.BR
         s += str('TATE  : ' + player.get_shield().get_name() + '(' + str(player.get_shield().get_ar()) + ')') + Constants.BR
-        s += str('YOROI : ' + player.get_armor().get_name() + '(' + str(player.get_armor().get_hp()) + ')') + Constants.BR
+        s += str('YOROI : ' + player.get_armor().get_name() + '(' + str(player.get_armor().get_hp()) + ')')
         s = Dialog.word_in_asterisk(s)
         return s
 

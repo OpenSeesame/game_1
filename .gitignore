@@ -1,0 +1,14 @@
+constants/__pycache__/
+scripts/character/__pycache__/
+scripts/character/enemies/__pycache__/
+scripts/dialog/__pycache__/
+scripts/dialog/en/__pycache__/
+scripts/dialog/ja/__pycache__/
+scripts/item/__pycache__/
+scripts/item/equipment/__pycache__/
+scripts/item/equipment/armors/__pycache__/
+scripts/item/equipment/shields/__pycache__/
+scripts/item/equipment/weapons/__pycache__/
+scripts/item/spell/__pycache__/
+scripts/system/__pycache__/
+utils/__pycache__/

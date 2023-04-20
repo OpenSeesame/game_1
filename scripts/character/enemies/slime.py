@@ -8,6 +8,7 @@ class Slime(Enemy):
     Atk = 25
     Ar = 10
     Mr = 0
+    Exp = 10
 
-    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr):
-        super().__init__(name, hp, mp, atk, ar, mr)
+    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr, exp=Exp):
+        super().__init__(name, hp, mp, atk, ar, mr, exp)

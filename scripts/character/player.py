@@ -10,19 +10,28 @@ from scripts.item.equipment.armors.hadaka import Hadaka
 from scripts.item.equipment.weapon import Weapon
 from scripts.item.equipment.armor import Armor
 from scripts.item.equipment.shield import Shield
+import scripts.item.spell as spell
 
 class Player(Character):
     Name = ''
-    Hp = 500
-    Mp = 50
+    Hp = 200
+    Mp = 5
     Atk = 50
     Ar = 0
     Mr = 0
-    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr, weapon=SudeW(), shield=SudeS(), armor=Hadaka()):
+    Weapon = SudeW()
+    Shield = SudeS()
+    Armor = Hadaka()
+    Guarding = False
+
+    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr, weapon=Weapon, shield=Shield, armor=Armor, guarding=Guarding):
         super().__init__(name, hp, mp, atk, ar, mr)
         self.__equip_weapon(weapon)
         self.__equip_shield(shield)
         self.__equip_armor(armor)
+        self.__guarding = guarding
+
+    ### action (s) ###
 
     def equip(self, equipment, with_dialog=Constants.WITHOUT_DIALOG):
         if with_dialog == Constants.WITH_DIALOG:
@@ -65,7 +74,7 @@ class Player(Character):
 
     def attack(self, enemy, with_dialog=Constants.WITHOUT_DIALOG):
         # calculate damage
-        damage = Calculate.calc_damage(self.get_atk(), enemy.get_ar())
+        damage = Calculate.calc_damage_ar(self, enemy)
 
         if damage > enemy.get_hp():
             enemy.set_hp(Constants.INT_ZERO)
@@ -74,7 +83,35 @@ class Player(Character):
 
         if with_dialog == Constants.WITH_DIALOG:
             print(BattleDialog.attacked(self, enemy, damage))
+ 
+    def spell(self, enemy, selected_spell, with_dialog=Constants.WITHOUT_DIALOG):
+        # consume mp
+        self.set_mp(self.get_mp() - selected_spell.get_cons_mp())
+
+        # damage calc
+        damage = Calculate.calc_damage_mr(self, enemy, selected_spell)
+
+        if damage > enemy.get_hp():
+            enemy.set_hp(Constants.INT_ZERO)
+        else:
+            enemy.set_hp(enemy.get_hp() - damage)
+
+        if with_dialog == Constants.WITH_DIALOG:
+            print(BattleDialog.spelled(self, enemy, selected_spell, damage))
+
+    def guard(self, with_dialog=Constants.WITHOUT_DIALOG):
+        self.set_guarding(True)
+        self.set_mp(self.get_mp() + Constants.GUARD_MP_HEAL)
+
+        if with_dialog == Constants.WITH_DIALOG:
+            print(BattleDialog.guarding(self))
     
+    def unguard(self, with_dialog=Constants.WITHOUT_DIALOG):
+        self.set_guarding(False)
+
+        if with_dialog == Constants.WITH_DIALOG:
+            self
+
     # with dialog
     def equip_with_dialog(self, equipment):
         self.equip(equipment, Constants.WITH_DIALOG)
@@ -84,6 +121,17 @@ class Player(Character):
    
     def attack_with_dialog(self, enemy):
         self.attack(enemy, Constants.WITH_DIALOG)
+    
+    def spell_with_dialog(self, enemy, spell):
+        self.spell(enemy, spell, Constants.WITH_DIALOG)
+
+    def guard_with_dialog(self):
+        self.guard(Constants.WITH_DIALOG)
+
+    def unguard_with_dialog(self):
+        self.unguard(Constants.WITH_DIALOG)
+
+    ### action (e) ###
 
     # getter, setter
     def get_weapon(self):
@@ -98,6 +146,11 @@ class Player(Character):
         return self.__shield
     def set_shield(self, shield):
         self.__shield = shield
+
+    def is_guarding(self):
+        return self.__guarding
+    def set_guarding(self, guarding):
+        self.__guarding = guarding
 
     # private method
     def __equip_weapon(self, weapon):

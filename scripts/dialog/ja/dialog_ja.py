@@ -77,7 +77,7 @@ class Dialog():
     def listup_save_data():
         s = ""
         for num in range(1, Constants.MAX_SAVE_DATA + 1):
-            s += str(num) + ': Player' + str(num) + Constants.BR
+            s += str(num) + ': プレイヤー' + str(num) + Constants.BR
         
         return s
 
@@ -99,25 +99,21 @@ class Dialog():
 
     # display status
     def status(character):
-        s = Dialog.word_in_asterisk('ステータス', Constants.ALIGN_C)
-        s += character.get_name() + Constants.BR
-        s += Dialog.ASTERISK_LINE
+        s = character.get_name() + Constants.BR
         s += str('ＨＰ　　 :' + str(character.get_hp()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
         s += str('ＭＰ　　 :' + str(character.get_mp()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
         s += str('こうげき :' + str(character.get_atk()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
         s += str('ぼうぎょ :' + str(character.get_ar()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
-        s += str('まぼう　 :' + str(character.get_mr()).rjust(Constants.MAX_STATUS_LENGTH)) + Constants.BR
+        s += str('まぼう　 :' + str(character.get_mr()).rjust(Constants.MAX_STATUS_LENGTH))
         s = Dialog.word_in_asterisk(s)
         return s
     
     # display equipment
     def equipment(player):
-        s = Dialog.word_in_asterisk('そうび', Constants.ALIGN_C)
-        s += player.get_name() + Constants.BR
-        s += Dialog.ASTERISK_LINE
+        s = player.get_name() + Constants.BR
         s += str('ぶき　 : ' + player.get_weapon().get_name() + '(' + str(player.get_weapon().get_atk()) + ')') + Constants.BR
         s += str('たて　 : ' + player.get_shield().get_name() + '(' + str(player.get_shield().get_ar()) + ')') + Constants.BR
-        s += str('よろい : ' + player.get_armor().get_name() + '(' + str(player.get_armor().get_hp()) + ')') + Constants.BR
+        s += str('よろい : ' + player.get_armor().get_name() + '(' + str(player.get_armor().get_hp()) + ')')
         s = Dialog.word_in_asterisk(s)
         return s
 

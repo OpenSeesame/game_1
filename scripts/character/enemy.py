@@ -10,12 +10,17 @@ class Enemy(Character):
     Atk = 25
     Ar = 10
     Mr = 0
-    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr):
+    Exp = 0
+    Guarding = False
+
+    def __init__(self, name=Name, hp=Hp, mp=Mp, atk=Atk, ar=Ar, mr=Mr, exp=Exp, guarding=Guarding):
         super().__init__(name, hp, mp, atk, ar, mr)
+        self.__guarding = guarding
+        self.__exp = exp
 
     def attack(self, player, with_dialog=Constants.WITHOUT_DIALOG):
         # calculate damage
-        damage = Calculate.calc_damage(self.get_atk(), player.get_ar())
+        damage = Calculate.calc_damage_ar(self, player)
 
         if damage > player.get_hp():
             player.set_hp(Constants.INT_ZERO)
@@ -27,3 +32,12 @@ class Enemy(Character):
     
     def attack_with_dialog(self, player):
         self.attack(player, Constants.WITH_DIALOG)
+
+    def get_exp(self):
+        return self.__exp
+    def set_exp(self, exp):
+        self.__exp = exp
+    def is_guarding(self):
+        return self.__guarding
+    def set_guarding(self, guarding):
+        self.__guarding = guarding

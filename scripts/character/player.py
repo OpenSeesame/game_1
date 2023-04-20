@@ -100,8 +100,14 @@ class Player(Character):
             print(BattleDialog.spelled(self, enemy, selected_spell, damage))
 
     def guard(self, with_dialog=Constants.WITHOUT_DIALOG):
+        # set guard
         self.set_guarding(True)
-        self.set_mp(self.get_mp() + Constants.GUARD_MP_HEAL)
+
+        # heal mp
+        if self.get_mp() + Constants.GUARD_MP_HEAL > self.get_max_mp():
+            self.set_mp(self.get_max_mp())
+        else:
+            self.set_mp(self.get_mp() + Constants.GUARD_MP_HEAL)
 
         if with_dialog == Constants.WITH_DIALOG:
             print(BattleDialog.guarding(self))

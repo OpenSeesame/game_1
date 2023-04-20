@@ -35,3 +35,9 @@ class Names:
         SLIME = 'Slime'
     elif Constants.LANG == Constants.LANG_JA:
         SLIME = 'スライム'
+
+    # spell
+    if Constants.LANG == Constants.LANG_EN:
+        FIRE = 'Fire'
+    elif Constants.LANG == Constants.LANG_JA:
+        FIRE = 'ファイア'

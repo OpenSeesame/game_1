@@ -34,7 +34,21 @@ class BattleDialog(Dialog):
         elif Constants.LANG == Constants.LANG_JA:
             s = BattleDialogJa.attacked(player, enemy, damage)
         return s
+
+    def spelled(player, enemy, spell, damage):
+        if Constants.LANG == Constants.LANG_EN:
+            s = BattleDialogEn.spelled(player, enemy, spell, damage)
+        elif Constants.LANG == Constants.LANG_JA:
+            s = BattleDialogJa.spelled(player, enemy, spell, damage)
+        return s
     
+    def not_enough_mp():
+        if Constants.LANG == Constants.LANG_EN:
+            s = BattleDialogEn.not_enough_mp()
+        elif Constants.LANG == Constants.LANG_JA:
+            s = BattleDialogJa.not_enough_mp()
+        return s
+
     def guarding(character):
         if Constants.LANG == Constants.LANG_EN:
             s = BattleDialogEn.guarding(character)

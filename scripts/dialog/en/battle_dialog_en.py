@@ -7,7 +7,7 @@ class BattleDialog(Dialog):
     
     def command():
         s = 'ATTACK: (1)' + Constants.BR
-        s += 'MAGIC : (2)' + Constants.BR
+        s += 'SPELL : (2)' + Constants.BR
         s += 'GUARD : (3)' + Constants.BR
         s += 'RUN   : (4)'
 
@@ -27,6 +27,19 @@ class BattleDialog(Dialog):
     def attacked(player, enemy, damage):
         s = str(player.get_name()) + "'s attack!!" + Constants.BR
         s += str(enemy.get_name()) + ' takes ' + str(damage) + ' damage!!'
+
+        s = BattleDialog.word_in_asterisk(s)
+        return s
+
+    def spelled(player, enemy, spell, damage):
+        s = str(player.get_name()) + ' spelled ' + str(spell.get_name()) + '!!' + Constants.BR
+        s += str(enemy.get_name()) + ' takes ' + str(damage) + ' damage!!'
+
+        s = BattleDialog.word_in_asterisk(s)
+        return s
+
+    def not_enough_mp():
+        s = 'Not enough MP!!' + Constants.BR
 
         s = BattleDialog.word_in_asterisk(s)
         return s

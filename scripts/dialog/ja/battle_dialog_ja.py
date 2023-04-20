@@ -31,6 +31,19 @@ class BattleDialog(Dialog):
         s = BattleDialog.word_in_asterisk(s)
         return s
 
+    def spelled(attacker, taker, spell, damage):
+        s = str(attacker.get_name()) + 'は' + str(spell.get_name()) + 'をとなえた！' + Constants.BR
+        s += str(taker.get_name()) + 'は' + str(damage) + 'ダメージをうけた！'
+
+        s = BattleDialog.word_in_asterisk(s)
+        return s
+
+    def not_enough_mp():
+        s = 'MPがたりない！！' + Constants.BR
+
+        s = BattleDialog.word_in_asterisk(s)
+        return s
+
     def guarding(character):
         s = str(character.get_name()) + 'はみをまもっている。'
 

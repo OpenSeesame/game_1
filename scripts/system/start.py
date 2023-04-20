@@ -18,6 +18,8 @@ class Start:
         elif new_load == Constants.LOAD:
             Start.__load_game(player)
 
+    # private method
+
     def __select_game():
         # display NEW or LOAD
         print(Dialog.new_load())
@@ -63,6 +65,7 @@ class Start:
                 Start.__load_data(player, i)
                 break
     
+    # todo
     def __load_data(player, i):
 
         player.set_name('King')

@@ -13,6 +13,11 @@ class Constants:
     # guard
     GUARD_AR = 100
     GUARD_MR = 50
+    GUARD_MP_HEAL = 10
+
+    # damage rate
+    MIN_DAMAGE_RATE = 0.9
+    MAX_DAMAGE_RATE = 1.1
 
     # zero
     INT_ZERO = 0
@@ -52,7 +57,7 @@ class Constants:
 
     # command
     ATTACK = '1'
-    MAGIC = '2'
+    SPELL = '2'
     GUARD = '3'
     RUN = '4'
 

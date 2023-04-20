@@ -3,11 +3,14 @@ from constants.constants import Constants
 from scripts.character.player import Player
 from scripts.character.enemy import Enemy
 from scripts.dialog.battle_dialog import BattleDialog
+import scripts.item.spell as spell
 
 class Battle():
     Player = Player()
     Enemy = Enemy()
     BattleEnd = False
+    CommandDone = False
+
     def __init__(self, player=Player, enemy=Enemy):
 
         # appeared!!
@@ -20,12 +23,17 @@ class Battle():
 
         # turn start
         while True:
+
+            Battle.CommandDone = False
             # unguard
             player.unguard()
 
             # player's turn
-            command = Battle.__select_command()
-            Battle.__act_comand(command, player, enemy)
+            while True:
+                command = Battle.__select_command()
+                Battle.__act_comand(command, player, enemy)
+                if Battle.CommandDone:
+                    break
             if Battle.BattleEnd:
                 break
 
@@ -44,26 +52,52 @@ class Battle():
 
         while True:
             command = input(BattleDialog.select_command())
-            if command in (Constants.ATTACK, Constants.MAGIC, Constants.GUARD, Constants.RUN): 
+            if command in (Constants.ATTACK, Constants.SPELL, Constants.GUARD, Constants.RUN): 
                 break
         
         return command
+
+    def __select_spell(player):
+
+        # select_spell
+        selected_spell = spell.Fire()
+
+        # consume mp
+        if selected_spell.get_cons_mp() > player.get_mp():
+            print(BattleDialog.not_enough_mp())
+            return BattleDialog.not_enough_mp()
+
+        return selected_spell
 
     def __act_comand(command, player, enemy):
         # attack
         if command == Constants.ATTACK:
             player.attack_with_dialog(enemy)
+            Battle.CommandDone = True
+
             time.sleep(Constants.BATTLE_SPEED)
-        # magic
-        elif command == Constants.MAGIC:
-            0
+        # spell
+        elif command == Constants.SPELL:
+            selected_spell = Battle.__select_spell(player)
+            # if not enough mp
+            if selected_spell == BattleDialog.not_enough_mp():
+                return
+            # else(enough mp)
+            else:
+                player.spell_with_dialog(enemy, selected_spell)
+                Battle.CommandDone = True
+
+            time.sleep(Constants.BATTLE_SPEED)
         # guard
         elif command == Constants.GUARD:
             player.guard_with_dialog()
+            Battle.CommandDone = True
+
             time.sleep(Constants.BATTLE_SPEED)
         # run
         elif command == Constants.RUN:
             print(BattleDialog.escaped())
+            Battle.CommandDone = True
             Battle.BattleEnd = True
             time.sleep(Constants.BATTLE_SPEED)
 
